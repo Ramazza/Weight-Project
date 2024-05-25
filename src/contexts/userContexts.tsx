@@ -12,6 +12,7 @@ export const UserStorage = ({ children }: any) => {
     const handleLogin = (email: string, password: string) => {
         api.post('/user/sign-in', {email, password}).then(({ data}) => {
             console.log('Login feito com sucesso!');
+            localStorage.setItem('token', data.token);
             navigateTo('/home');
         }).catch((error) => {
             console.log('Não foi possível fazer o login', error);
@@ -26,7 +27,14 @@ export const UserStorage = ({ children }: any) => {
         }).catch((error) => {
             console.log('Não foi possível criar o usuário', error)
         })
-
+    }
+    
+    const handleAddData = (token: string) => {
+        api.post('/user/add-data', {headers:{Autorizathion: token}}).then(({ data }) => {
+            console.log('Dados cadastrados com sucesso.');
+        }).catch((error) => {
+            console.log('Usuário não autenticado', error);
+        })
     }
 
     const [isToggled, setIsToggled] = useState(false);
@@ -52,6 +60,7 @@ export const UserStorage = ({ children }: any) => {
             handleCreateAccount,
             handleToggle,
             handleLogin,
+            handleAddData,
             isToggled,
             animationState,
         }}>
