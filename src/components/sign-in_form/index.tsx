@@ -9,7 +9,7 @@ interface ToggleProps {
 
 const SignInForm: React.FC<ToggleProps> = ({ isToggled, animationState }) => {
 
-    const { handleCreateAccount, handleToggle } = useContext(userContext);
+    const { handleLogin, handleToggle } = useContext(userContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,7 +21,7 @@ const SignInForm: React.FC<ToggleProps> = ({ isToggled, animationState }) => {
                 <Input type='email' placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
                     <Input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} style={{width: '60%'}}/>
                 <ButtonContainer>
-                    <Button>Login</Button>
+                    <Button onMouseDown={() => handleLogin(email, password)}>Login</Button>
                     <Button1 onClick={() => handleToggle()}>Não possuo uma conta</Button1>
                 </ButtonContainer>
             </SignInContainer>
