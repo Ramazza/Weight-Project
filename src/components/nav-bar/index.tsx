@@ -4,10 +4,6 @@ import UserImg from '../../assets/user.png';
 
 function NavBar() {
 
-    // Icone na esquerda
-    // My Fit Journey no meio
-    // Perfil na direita
-
     return(
         <Container>
             <Logo src={LogoImg} alt="Logo"/>
