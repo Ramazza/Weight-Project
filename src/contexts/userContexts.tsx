@@ -15,7 +15,6 @@ export const UserStorage = ({ children }: any) => {
     const [userInfo, setUserInfo] = useState({});
     const [weight, setWeight] = useState(0);
 
-
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
         if(savedToken) {
@@ -82,12 +81,6 @@ export const UserStorage = ({ children }: any) => {
     }
     
     const handleAddData = async (token: string, user_id: string, weight: number, fat: number, muscle: number, vis_fat: number, body_age: number, date: string) => {
-      /*   api.post('/user/add-data', { headers: { Authorization: `Bearer ${token}` } }).then(({ data }) => {
-            console.log('Dados cadastrados com sucesso.');
-        }).catch((error) => {
-            console.log('Usuário não autenticado', error);
-        }) */
-
         try {
             const response = await api.post(
                 '/user/add-data',
@@ -204,6 +197,31 @@ export const UserStorage = ({ children }: any) => {
         }
     }
 
+    const handleGetAllData = async (user_id: string, token: string) => {
+        try{
+            const response = await api.get(
+                'user/get-all-data',
+                {
+                    params: { user_id },
+                    headers: { Authorization: `Bearer ${token}`}
+                },
+            );
+            console.log('Dados obtidos com sucesso!', response.data);
+            // setUserData(response.data);
+            return response.data;
+        } catch (error: any) {
+            if (error.response) {
+                console.error('Erro no servidor:', error.response.data);
+                console.error('Status code:', error.response.status);
+            } else if (error.request) {
+                console.error('Nenhuma resposta recebida do servidor:', error.request);
+            } else {
+                console.error('Erro ao configurar a solicitação:', error.message);
+            }
+            console.error('Configuração do erro:', error.config);
+        }
+    }
+
     return(
         <userContext.Provider value={{
             handleCreateAccount,
@@ -216,6 +234,7 @@ export const UserStorage = ({ children }: any) => {
             handleGetLatestWeight,
             handleName,
             handleBMI,
+            handleGetAllData,
             isToggled,
             animationState,
             userInfo,
