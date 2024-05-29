@@ -81,12 +81,33 @@ export const UserStorage = ({ children }: any) => {
         })
     }
     
-    const handleAddData = (token: string) => {
-        api.post('/user/add-data', { headers: { Authorization: `Bearer ${token}` } }).then(({ data }) => {
+    const handleAddData = async (token: string, user_id: string, weight: number, fat: number, muscle: number, vis_fat: number, body_age: number, date: string) => {
+      /*   api.post('/user/add-data', { headers: { Authorization: `Bearer ${token}` } }).then(({ data }) => {
             console.log('Dados cadastrados com sucesso.');
         }).catch((error) => {
             console.log('Usuário não autenticado', error);
-        })
+        }) */
+
+        try {
+            const response = await api.post(
+                '/user/add-data',
+                {user_id, weight, fat, muscle, vis_fat, body_age, date},
+                {
+                    headers: { Authorization: `Bearer ${token}`}
+                }
+            );
+            console.log('Dados adicionados com sucesso!', response.data);
+        } catch (error: any) {
+            if (error.response) {
+                console.error('Erro no servidor:', error.response.data);
+                console.error('Status code:', error.response.status);
+            } else if (error.request) {
+                console.error('Nenhuma resposta recebida do servidor:', error.request);
+            } else {
+                console.error('Erro ao configurar a solicitação:', error.message);
+            }
+            console.error('Configuração do erro:', error.config);
+        }
     }
 
     const handleSetHeight = async (height: number, user_id: string, token: string) => {
