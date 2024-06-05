@@ -5,18 +5,12 @@ import { Container, Table, Th, Td, Tr, PaginationButton, TableTitle} from "./sty
 
 function DataHistory() {
 
-    // Mostrar os pesos e tals
-    // Mostrar do mais novo para o mais velho
-    // Mostrar 10 por página
-    // Ter botão ou sei la para ir para a próxima página
-    // Ter filtro para uma melhor busca
-
     const [data, setData] = useState<MyData[]>([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const entriesPerPage = 10;
 
-    const { handleGetAllData } = useContext(userContext);
+    const { handleGetAllData, reload } = useContext(userContext);
 
     const token = localStorage.getItem('token');
 
@@ -44,11 +38,10 @@ function DataHistory() {
                 console.error("Error fetching data:", error);
             })
         }
-    }, [token, handleGetAllData]);
+    }, [token, handleGetAllData, reload]);
 
     const indexOfLastEntry = currentPage * entriesPerPage;
     const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    console.log(data)
     const currentEntries = data.slice(indexOfFirstEntry, indexOfLastEntry);
 
     const nextPage = () => setCurrentPage(currentPage + 1);
@@ -57,12 +50,6 @@ function DataHistory() {
     if (data.length === 0) {
         return <div>Loading...</div>;
     }
-
-    // Container de fora
-    // Titulo do container
-    // Linha para Filtragem
-    // Titulo para as colunas
-    // Linhas com os conteudos
 
     return(
         <Container>
@@ -74,8 +61,8 @@ function DataHistory() {
                         <Th>Peso (kg)</Th>
                         <Th>Gordura (%)</Th>
                         <Th>Musculo (%)</Th>
-                        <Th>Idade Corporal</Th>
                         <Th>Gordura Visceral</Th>
+                        <Th>Idade Corporal</Th>
                     </Tr>
                 </thead>
                 <tbody>

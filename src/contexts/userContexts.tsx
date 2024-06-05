@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useCallback } from "react";
 import api from "../api";
 
 export const userContext = createContext({} as any);
@@ -14,6 +14,7 @@ export const UserStorage = ({ children }: any) => {
     const [token, setToken] = useState<string | null>(null);
     const [userInfo, setUserInfo] = useState({});
     const [weight, setWeight] = useState(0);
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
@@ -68,7 +69,7 @@ export const UserStorage = ({ children }: any) => {
         }).catch((error) => {
             console.log('Não foi possível fazer o login', error);
         })
-    }
+    };
 
     const handleCreateAccount = (name: string, email: string, password: string, password2: string) => {
 
@@ -78,7 +79,7 @@ export const UserStorage = ({ children }: any) => {
         }).catch((error) => {
             console.log('Não foi possível criar o usuário', error)
         })
-    }
+    };
     
     const handleAddData = async (token: string, user_id: string, weight: number, fat: number, muscle: number, vis_fat: number, body_age: number, date: string) => {
         try {
@@ -90,6 +91,7 @@ export const UserStorage = ({ children }: any) => {
                 }
             );
             console.log('Dados adicionados com sucesso!', response.data);
+            setReload((prev) => !prev);
         } catch (error: any) {
             if (error.response) {
                 console.error('Erro no servidor:', error.response.data);
@@ -101,7 +103,7 @@ export const UserStorage = ({ children }: any) => {
             }
             console.error('Configuração do erro:', error.config);
         }
-    }
+    };
 
     const handleSetHeight = async (height: number, user_id: string, token: string) => {
         try {
@@ -124,7 +126,7 @@ export const UserStorage = ({ children }: any) => {
             }
             console.error('Configuração do erro:', error.config);
         }
-    }
+    };
 
     const handleSetGoal = async (goal: number, user_id: string, token: string) => {
         try {
@@ -147,7 +149,7 @@ export const UserStorage = ({ children }: any) => {
             }
             console.error('Configuração do erro:', error.config);
         }
-    }
+    };
     
     const handleGetUserInfo = async (user_id: string, token: string) => {
         try {
@@ -195,7 +197,7 @@ export const UserStorage = ({ children }: any) => {
             }
             console.error('Configuração do erro:', error.config);
         }
-    }
+    };
 
     const handleGetAllData = async (user_id: string, token: string) => {
         try{
@@ -220,7 +222,7 @@ export const UserStorage = ({ children }: any) => {
             }
             console.error('Configuração do erro:', error.config);
         }
-    }
+    };
 
     return(
         <userContext.Provider value={{
@@ -235,10 +237,12 @@ export const UserStorage = ({ children }: any) => {
             handleName,
             handleBMI,
             handleGetAllData,
+            setReload,
             isToggled,
             animationState,
             userInfo,
             weight,
+            reload,
         }}>
             {children}
         </userContext.Provider>

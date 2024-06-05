@@ -6,7 +6,7 @@ import User from '../../assets/user.png';
 
 function UserData() {
 
-    const { handleSetHeight, handleSetGoal, handleGetUserInfo, userInfo, weight, handleGetLatestWeight, handleName, handleBMI } = useContext(userContext);
+    const { handleSetHeight, handleSetGoal, handleGetUserInfo, userInfo, weight, handleGetLatestWeight, handleName, handleBMI, reload } = useContext(userContext);
 
     const [name, setName] = useState('');
     const [height, setHeight] = useState('');
@@ -28,7 +28,7 @@ function UserData() {
             handleGetUserInfo(decoded.id, token);
             handleGetLatestWeight(decoded.id, token);
         }
-    }, []);
+    }, [token, reload]);
 
     useEffect(() => {
         if (userInfo && userInfo.user) {
@@ -37,7 +37,7 @@ function UserData() {
             setName(handleName(userInfo.user.name));
             setIMC(handleBMI(weight, userInfo.user.height));
         }
-    }, [userInfo]);
+    }, [userInfo, reload]);
 
     return(
         <Container>

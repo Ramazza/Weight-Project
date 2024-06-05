@@ -6,7 +6,7 @@ import { jwtDecode } from "jwt-decode";
 
 function DataForm() {
 
-    const { handleAddData } = useContext(userContext);
+    const { handleAddData, reload, setReload } = useContext(userContext);
 
     const [weight, setWeight] = useState('');
     const [fat, setFat] = useState('');
@@ -22,22 +22,16 @@ function DataForm() {
         email: string;
     }
 
-    const invertDate = (date: string) => {
-        const [day, month, year] = date.split('/');
-        return `${year}/${month}/${day}`;
-    }
-
     const handleDataEntry = () => {
         
         if(weight === '' || date.length < 1) {
             return console.log('Peso ou data vazio.');
         }
 
-        const invertedDate = invertDate(date);
-
         if(token) {
             const decoded = jwtDecode<MyJwtPayload>(token);
-            handleAddData(token, decoded.id, parseFloat(weight), parseFloat(fat), parseFloat(muscle), parseFloat(visFat), parseFloat(bodyAge), invertedDate);
+            handleAddData(token, decoded.id, parseFloat(weight), parseFloat(fat), parseFloat(muscle), parseFloat(visFat), parseFloat(bodyAge), date);
+            setReload((prev: any) => !prev)
         }
 
         setWeight('');
@@ -75,7 +69,7 @@ function DataForm() {
                 </InputContainer>
                 <InputContainer>
                     <InputTitle>Data: </InputTitle>
-                    <Input placeholder="DD/MM/AAAA" value={date || ''} onChange={(e) => {setDate(e.target.value)}}/>
+                    <Input type="date" placeholder="DD/MM/AAAA" value={date || ''} onChange={(e) => {setDate(e.target.value)}}/>
                 </InputContainer>
                 <Button onMouseDown={() => {handleDataEntry()}}>Adicionar</Button>
             </FormContainer>

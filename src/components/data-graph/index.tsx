@@ -25,7 +25,7 @@ function DataGraph() {
 
     const [data, setData] = useState<MyData[]>([]);
 
-    const { handleGetAllData } = useContext(userContext);
+    const { handleGetAllData, reload } = useContext(userContext);
 
     const token = localStorage.getItem('token');
 
@@ -39,7 +39,7 @@ function DataGraph() {
                 console.error("Error fetching data:", error);
             })
         }
-    }, [token, handleGetAllData]);
+    }, [token, handleGetAllData, reload]);
 
     const WeightChart = {
         labels: data.map(entry => new Date(entry.date).toLocaleDateString()),

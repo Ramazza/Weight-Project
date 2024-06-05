@@ -29,6 +29,7 @@ export const ProfileImage = styled.img`
     height: 40px;
     padding-right: 1rem;
     filter: drop-shadow(1px 1px 0 black);
+    cursor: pointer;
 
     &:hover{
         transform: scale(1.05);
