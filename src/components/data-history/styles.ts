@@ -31,6 +31,11 @@ export const Td = styled.td`
     padding: 8px;
 `;
 
+export const EditInput = styled.input`
+    width: 80%;
+    text-align: center;
+`;  
+
 export const Tr = styled.tr`
     text-align: center;
 
@@ -57,4 +62,12 @@ export const PaginationButton = styled.button`
         background-color: #ccc;
         cursor: default;
     }
+`;
+
+export const EditButton = styled.button`
+
+`;
+
+export const DeleteButton = styled.button`
+
 `;

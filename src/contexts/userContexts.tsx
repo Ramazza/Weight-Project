@@ -1,5 +1,16 @@
-import { createContext, useEffect, useState, useCallback } from "react";
+import { createContext, useEffect, useState } from "react";
 import api from "../api";
+
+interface MyData {
+    id: string;
+    user_id: string;
+    weight: number;
+    fat: number;
+    muscle: number;
+    vis_fat: number;
+    body_age: number;
+    date: string;
+}
 
 export const userContext = createContext({} as any);
 
@@ -15,6 +26,7 @@ export const UserStorage = ({ children }: any) => {
     const [userInfo, setUserInfo] = useState({});
     const [weight, setWeight] = useState(0);
     const [reload, setReload] = useState(false);
+    const [data, setData] = useState<MyData[]>([]);
 
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
@@ -22,21 +34,6 @@ export const UserStorage = ({ children }: any) => {
             setToken(savedToken);
         }
     }, []);
-
-  /*   const handleToggle = () => {
-        if(animationState === 0) {
-            setAnimationState(1);
-            setIsToggled(!isToggled);
-        }
-        if(animationState === 1) {
-            setAnimationState(2);
-            setIsToggled(!isToggled);
-        }
-        if(animationState === 2) {
-            setAnimationState(1);
-            setIsToggled(!isToggled);
-        }
-    } */
 
     const handleToggle = () => {
         setAnimationState((prev) => (prev + 1) % 3);
@@ -49,6 +46,14 @@ export const UserStorage = ({ children }: any) => {
         const lastName = nameParts[nameParts.length - 1];
         const firstAndLastName = `${firstName} ${lastName}`;
         return firstAndLastName;
+    }
+
+    const handleDate = (date: string): string => {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = (`0${d.getMonth() + 1}`).slice(-2);
+        const day = (`0${d.getDate()}`).slice(-2);
+        return `${year}-${month}-${day}`;
     }
 
     const handleBMI = (weight: number, height: string) => {
@@ -224,6 +229,55 @@ export const UserStorage = ({ children }: any) => {
         }
     };
 
+    const handleDeleteData = async (id: string, token: string) => {
+        try {
+            const response = await api.delete(
+                '/user/delete-weight',
+                {
+                    params: { id },
+                    headers: { Authorization: `Bearer ${token}` }
+                },
+            );
+            console.log('Dados excluídos com sucesso!', response.data);
+            setReload((prev) => !prev); 
+        } catch (error: any) {
+            if (error.response) {
+                console.error('Erro no servidor:', error.response.data);
+                console.error('Status code:', error.response.status);
+            } else if (error.request) {
+                console.error('Nenhuma resposta recebida do servidor:', error.request);
+            } else {
+                console.error('Erro ao configurar a solicitação:', error.message);
+            }
+            console.error('Configuração do erro:', error.config);
+        }
+    };
+
+    const handleUpdateData = async (id: string, weight: number, fat: number, muscle: number, vis_fat: number, body_age: number, date: string, token: string) => {
+        try {
+            const formatedDate = handleDate(date);
+            const response = await api.put(
+                '/user/update-weight',
+                {id, weight, fat, muscle, vis_fat, body_age, date: formatedDate},
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+            console.log('Dados alterados com sucesso!', response.data);
+            setReload((prev) => !prev);
+        } catch (error: any) {
+            if (error.response) {
+                console.error('Erro no servidor:', error.response.data);
+                console.error('Status code:', error.response.status);
+            } else if (error.request) {
+                console.error('Nenhuma resposta recebida do servidor:', error.request);
+            } else {
+                console.error('Erro ao configurar a solicitação:', error.message);
+            }
+            console.error('Configuração do erro:', error.config);
+        }
+    }   
+
     return(
         <userContext.Provider value={{
             handleCreateAccount,
@@ -237,12 +291,16 @@ export const UserStorage = ({ children }: any) => {
             handleName,
             handleBMI,
             handleGetAllData,
+            handleDeleteData,
+            handleUpdateData,
             setReload,
+            handleDate,
             isToggled,
             animationState,
             userInfo,
             weight,
             reload,
+            data,
         }}>
             {children}
         </userContext.Provider>
