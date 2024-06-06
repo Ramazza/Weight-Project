@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import api from "../api";
+import User from '../assets/user.png';
+
 
 interface MyData {
     id: string;
@@ -27,6 +29,7 @@ export const UserStorage = ({ children }: any) => {
     const [weight, setWeight] = useState(0);
     const [reload, setReload] = useState(false);
     const [data, setData] = useState<MyData[]>([]);
+    const [profileImage, setProfileImage] = useState(User);
 
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
@@ -95,7 +98,7 @@ export const UserStorage = ({ children }: any) => {
                     headers: { Authorization: `Bearer ${token}`}
                 }
             );
-            console.log('Dados adicionados com sucesso!', response.data);
+            // console.log('Dados adicionados com sucesso!', response.data);
             setReload((prev) => !prev);
         } catch (error: any) {
             if (error.response) {
@@ -119,7 +122,7 @@ export const UserStorage = ({ children }: any) => {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
-            console.log('Altura adicionada com sucesso!', response.data);
+            // console.log('Altura adicionada com sucesso!', response.data);
         } catch (error: any) {
             if (error.response) {
                 console.error('Erro no servidor:', error.response.data);
@@ -142,7 +145,7 @@ export const UserStorage = ({ children }: any) => {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
-            console.log('Altura adicionada com sucesso!', response.data);
+            // console.log('Altura adicionada com sucesso!', response.data);
         } catch (error: any) {
             if (error.response) {
                 console.error('Erro no servidor:', error.response.data);
@@ -166,7 +169,7 @@ export const UserStorage = ({ children }: any) => {
                 },
             );
             setUserInfo(response.data);
-            console.log('Dados obtidos com sucesso!');
+            // console.log('Dados obtidos com sucesso!');
         } catch (error: any) {
             if (error.response) {
                 console.error('Erro no servidor:', error.response.data);
@@ -189,7 +192,7 @@ export const UserStorage = ({ children }: any) => {
                     headers: { Authorization: `Bearer ${token}`}
                 },
             );
-            console.log('Dados obtidos com sucesso!');
+            // console.log('Dados obtidos com sucesso!');
             setWeight(response.data.user.weight);
         } catch (error: any) {
             if (error.response) {
@@ -213,7 +216,7 @@ export const UserStorage = ({ children }: any) => {
                     headers: { Authorization: `Bearer ${token}`}
                 },
             );
-            console.log('Dados obtidos com sucesso!', response.data);
+            // console.log('Dados obtidos com sucesso!', response.data);
             // setUserData(response.data);
             return response.data;
         } catch (error: any) {
@@ -238,7 +241,7 @@ export const UserStorage = ({ children }: any) => {
                     headers: { Authorization: `Bearer ${token}` }
                 },
             );
-            console.log('Dados excluídos com sucesso!', response.data);
+            // console.log('Dados excluídos com sucesso!', response.data);
             setReload((prev) => !prev); 
         } catch (error: any) {
             if (error.response) {
@@ -263,7 +266,7 @@ export const UserStorage = ({ children }: any) => {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
-            console.log('Dados alterados com sucesso!', response.data);
+            // console.log('Dados alterados com sucesso!', response.data);
             setReload((prev) => !prev);
         } catch (error: any) {
             if (error.response) {
@@ -295,12 +298,14 @@ export const UserStorage = ({ children }: any) => {
             handleUpdateData,
             setReload,
             handleDate,
+            setProfileImage,
             isToggled,
             animationState,
             userInfo,
             weight,
             reload,
             data,
+            profileImage,
         }}>
             {children}
         </userContext.Provider>

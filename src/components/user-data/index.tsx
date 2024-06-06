@@ -2,17 +2,19 @@ import { BMI, Container, DataContainer, DataInfoContainer, DataName, Height, Img
 import { useContext, useEffect, useState } from "react";
 import {jwtDecode} from 'jwt-decode';
 import { userContext } from "../../contexts/userContexts";
-import User from '../../assets/user.png';
 
 function UserData() {
 
-    const { handleSetHeight, handleSetGoal, handleGetUserInfo, userInfo, weight, handleGetLatestWeight, handleName, handleBMI, reload } = useContext(userContext);
+    const { handleSetHeight, handleSetGoal, handleGetUserInfo, userInfo, weight, handleGetLatestWeight, handleName, handleBMI, 
+            reload, profileImage, setProfileImage, 
+        } = useContext(userContext);
 
     const [name, setName] = useState('');
     const [height, setHeight] = useState('');
     const [goal, setGoal] = useState('');
     const [id, setId] = useState('');
     const [IMC, setIMC] = useState(0);
+    
 
     interface MyJwtPayload {
         id: string;
@@ -39,10 +41,44 @@ function UserData() {
         }
     }, [userInfo, reload]);
 
+    useEffect(() => {
+        const storedImage = localStorage.getItem('profileImage');
+        if (storedImage) {
+            setProfileImage(storedImage);
+        }
+    }, []);
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                setProfileImage(base64String);
+                localStorage.setItem('profileImage', base64String);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleProfileImgClick = () => {
+        const fileInput = document.getElementById('profileImageInput');
+        if (fileInput) {
+            fileInput.click();
+        }
+    };
+
     return(
         <Container>
             <ImgContainer>
-                <ProfileImg src={User} alt='User Image'/>
+                <ProfileImg src={profileImage} alt='User Image' onMouseDown={handleProfileImgClick} />
+                <input
+                    type="file"
+                    id="profileImageInput"
+                    style={{ display: 'none' }}
+                    onChange={handleImageChange}
+                    accept="image/*"
+                />
             </ImgContainer>
             <DataContainer>
                 <Name>{name}</Name>

@@ -41,6 +41,11 @@ export const ImgContainer = styled.div`
 export const ProfileImg = styled.img`
     height: 18vh;
     padding: 1rem;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.02);
+    }
 `;
 
 export const DataContainer = styled.div`
@@ -89,7 +94,7 @@ export const UserGoal = styled.input`
     border: none;
     font-size: 1.1em;
     font-weight: 400;
-    width: 60%;
+    width: 50%;
 
     @media (max-width: 415px) {
         text-align: center;
