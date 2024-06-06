@@ -13,6 +13,10 @@ export const FormContainer = styled.div`
     background-color: #F2F2F2;
     border: 2px solid black;
     border-radius: 15px;
+
+    @media (max-width: 415px) {
+        width: 70vw;
+    }
 `;
 
 export const Title = styled.span`

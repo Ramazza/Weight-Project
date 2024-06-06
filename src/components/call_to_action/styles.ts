@@ -31,7 +31,9 @@ const slideOut = keyframes`
 
 
 export const Container = styled.div`
-
+    @media (max-width: 415px) {
+        width: 50vw;
+    }
 `;
 
 export const LogoContainer = styled.div<{isToggled: Boolean, animationState: Number}>`
@@ -44,6 +46,11 @@ export const LogoContainer = styled.div<{isToggled: Boolean, animationState: Num
     display: flex;
     flex-direction: column;
 
+    @media (max-width: 415px) {
+        width: 100%;
+        height: 100%;
+    }
+
     animation: ${({ animationState }) => {
         switch (animationState) {
             case 1:
@@ -54,6 +61,7 @@ export const LogoContainer = styled.div<{isToggled: Boolean, animationState: Num
                 return 'none';
         }
     }};
+
 `;
 
 export const Overlay = styled.div`

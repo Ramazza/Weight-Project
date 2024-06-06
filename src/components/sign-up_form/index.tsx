@@ -23,7 +23,7 @@ const SignUpForm: React.FC<ToggleProps> = ({ isToggled, animationState }) => {
                 <Input type="text" placeholder='Nome e Sobrenome' onChange={(e) => setName(e.target.value)}/>
                 <Input type='email' placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
                 <PasswordContainer>
-                    <Input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} style={{width: '60%'}}/>
+                    <Input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)}/>
                     <Input type='password' placeholder='Confirmar Senha' onChange={(e) => setPassword2(e.target.value)}/>
                 </PasswordContainer>
                 <ButtonContainer>

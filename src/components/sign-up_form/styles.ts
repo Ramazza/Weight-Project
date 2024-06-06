@@ -30,6 +30,10 @@ const slideIn = keyframes`
 
 export const Container = styled.div`
     z-index: 2;
+
+    @media (max-width: 415px) {
+        width: 50vw;
+    }
 `;
 
 export const SignInContainer = styled.div<{ isToggled: Boolean, animationState: Number}>`
@@ -42,6 +46,11 @@ export const SignInContainer = styled.div<{ isToggled: Boolean, animationState: 
     gap: 2.5rem;
     background-color: #EFEFEF;
     z-index: 2;
+
+    @media (max-width: 415px) {
+        width: 100%;
+        height: 100%;
+    }
 
     animation: ${({ animationState }) => {
             switch (animationState) {
@@ -70,12 +79,21 @@ export const Input = styled.input`
     padding-left: 5px;
     font-size: 1.1em;
     font-weight: 450;
+
+    @media (max-width: 415px) {
+        width: 90%;
+    }
 `;
 
 export const PasswordContainer = styled.div`
     width: 60%;
     display: flex;
     gap: 1rem;
+
+    @media (max-width: 415px) {
+        flex-direction: column;
+        width: 90%;
+    }
 `;
 
 export const ButtonContainer = styled.div`
@@ -83,6 +101,10 @@ export const ButtonContainer = styled.div`
     flex-direction: row;
     gap: 1rem;
     padding-top: 2rem;
+
+    @media (max-width: 415px) {
+        width: 90%;
+    }
 `;
 
 export const Button = styled.button`

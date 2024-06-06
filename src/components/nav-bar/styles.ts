@@ -8,6 +8,10 @@ export const Container = styled.div`
     height: 50px;
     overflow-x: hidden;
     overflow-y: hidden;
+
+    @media (max-width: 415px) {
+        justify-content: center;
+    }
 `;
 
 export const Logo = styled.img`
@@ -16,6 +20,10 @@ export const Logo = styled.img`
 
     &:hover{
         transform: scale(1.05);
+    }
+
+    @media (max-width: 415px) {
+        display: none;
     }
 `;
 
@@ -33,6 +41,10 @@ export const ProfileImage = styled.img`
 
     &:hover{
         transform: scale(1.05);
+    }
+
+    @media (max-width: 415px) {
+        display: none;
     }
 `;
 

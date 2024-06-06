@@ -18,8 +18,8 @@ const SignInForm: React.FC<ToggleProps> = ({ isToggled, animationState }) => {
         <Container>
             <SignInContainer isToggled={isToggled} animationState={animationState}>
                 <Title>Acessar Conta</Title>
-                <Input type='email' placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
-                    <Input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)} style={{width: '60%'}}/>
+                    <Input type='email' placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
+                    <Input type='password' placeholder='Senha' onChange={(e) => setPassword(e.target.value)}/>
                 <ButtonContainer>
                     <Button onMouseDown={() => handleLogin(email, password)}>Login</Button>
                     <Button1 onClick={() => handleToggle()}>Não possuo uma conta</Button1>
