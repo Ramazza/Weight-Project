@@ -31,6 +31,11 @@ export const UserStorage = ({ children }: any) => {
     const [data, setData] = useState<MyData[]>([]);
     const [profileImage, setProfileImage] = useState(User);
 
+    const [loginError, setLoginError] = useState(false)
+	const [nameError, setNameError] = useState('');
+	const [emailError, setEmailError] = useState('');
+	const [passwordError, setPasswordError] = useState('Use 9 caracteres com uma combinação de letras, números e símbolos.');
+
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
         if(savedToken) {
@@ -68,6 +73,43 @@ export const UserStorage = ({ children }: any) => {
         return IMC;
     }
 
+    interface FormFields {
+		name: string;
+		email: string;
+		password: string;
+		password2: string;
+	}
+
+    const checkLogin = (formData: FormFields) => {
+		const { name, email, password, password2 } = formData;
+		const errors: { [key: string]: string } = {};
+		const containsNumber = /\d/.test(password); 
+		const containsSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+		if (name.trim() === '') {
+			errors.name = 'Digite o seu nome';
+		}
+
+		if (email.trim() === '' || !email.includes('@')) {
+			errors.email = 'E-mail inválido';
+		}
+
+		if (password.trim() === '' || password.length < 8 || !containsNumber || !containsSpecialChar) {
+			errors.password = 'Digite uma senha válida';
+		}
+
+		if (password !== password2) {
+			errors.password = 'As senhas não coincidem';
+		}
+
+		if (Object.keys(errors).length > 0) {
+			return errors;
+		}
+
+		setPasswordError('Use 9 caracteres com uma combinação de letras, números e símbolos.');
+		return 'ok';
+	};
+
     const handleLogin = (email: string, password: string) => {
         api.post('/user/sign-in', {email, password}).then(({ data}) => {
             console.log('Login feito com sucesso!');
@@ -80,6 +122,15 @@ export const UserStorage = ({ children }: any) => {
     };
 
     const handleCreateAccount = (name: string, email: string, password: string, password2: string) => {
+
+        const loginCheckResult = checkLogin({ name, email, password, password2 });
+
+        if (typeof loginCheckResult === 'object') {
+            setNameError(loginCheckResult.name || '');
+			setEmailError(loginCheckResult.email || '');
+			setPasswordError(loginCheckResult.password || '');
+			return;
+        }
 
         api.post('/user/sign-up', {name, email, password}).then(() => {
             console.log('Usuário criado com sucesso!');
@@ -306,6 +357,10 @@ export const UserStorage = ({ children }: any) => {
             reload,
             data,
             profileImage,
+            loginError,
+            nameError,
+            emailError,
+            passwordError,
         }}>
             {children}
         </userContext.Provider>

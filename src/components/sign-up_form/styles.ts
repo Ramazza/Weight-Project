@@ -43,7 +43,7 @@ export const SignInContainer = styled.div<{ isToggled: Boolean, animationState: 
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2.5rem;
+    gap: 1rem;
     background-color: #EFEFEF;
     z-index: 2;
 
@@ -64,15 +64,56 @@ export const SignInContainer = styled.div<{ isToggled: Boolean, animationState: 
     }};
 `;
 
+export const FormContainer = styled.div`
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+`;
+
 export const Title = styled.span`
     font-size: 2em;
     font-weight: 700;
 `;
 
-export const Input = styled.input`
-    width: 60%;
+export const NameInput = styled.input<{nameError: string}>`
+    width: 70%;
     border: none;
-    border-bottom: 2px solid grey;
+    border-bottom: 2px solid ${({nameError}) => nameError !== '' ? 'red' : 'gray'};
+    outline: none;
+    background-color: transparent;
+    padding: 5px 0;
+    padding-left: 5px;
+    font-size: 1.1em;
+    font-weight: 450;
+
+    @media (max-width: 415px) {
+        width: 90%;
+    }
+`;
+
+export const EmailInput = styled.input<{emailError: string}>`
+    width: 70%;
+    border: none;
+    border-bottom: 2px solid ${({emailError}) => emailError !== '' ? 'red' : 'gray'};
+    outline: none;
+    background-color: transparent;
+    padding: 5px 0;
+    padding-left: 5px;
+    font-size: 1.1em;
+    font-weight: 450;
+
+    @media (max-width: 415px) {
+        width: 90%;
+    }
+`;
+
+export const PasswordInput = styled.input<{passwordError: string}>`
+    width: 80%;
+    border: none;
+    border-bottom: 2px solid ${({passwordError}) => passwordError.includes('Use') || passwordError === '' ? 'gray' : 'red'};
     outline: none;
     background-color: transparent;
     padding: 5px 0;
@@ -86,7 +127,7 @@ export const Input = styled.input`
 `;
 
 export const PasswordContainer = styled.div`
-    width: 60%;
+    width: 70%;
     display: flex;
     gap: 1rem;
 
@@ -134,4 +175,38 @@ export const Button1 = styled.button`
         color: black;
         transform: scale(1.06);
     }
+`;
+
+export const ShowPasswordContainer = styled.div`
+    width: 70%;
+	height: 30px;
+	display: flex;
+    justify-content: left;
+	align-items: center;
+	gap: 10px;
+`;
+
+export const ShowPasswordButton = styled.button<{showPassword: string}>`
+	height: 15px;
+	border: 2px solid ${({ showPassword }) => showPassword.includes('password') ? '#d3d3d3' : 'grey'};
+	border-radius: 3px;
+	background-color: ${({ showPassword }) => showPassword.includes('password') ? 'white' : '#1c74ec'};
+
+	&:hover {
+		box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.5);
+	}
+`;
+
+export const ShowPassword = styled.span`
+	font-size: 0.9em;
+	font-weight: 470;
+	cursor: pointer;
+`;
+
+
+export const ErrorText = styled.span<{passwordError: string}>`
+    width: 70%;
+    font-size: 0.8em;
+	font-weight: 500;
+	color: ${({passwordError}) => passwordError.includes('Use') ? '#1c74ec' : 'red'};
 `;
