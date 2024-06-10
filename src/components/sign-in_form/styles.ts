@@ -65,6 +65,15 @@ export const SignInContainer = styled.div<{isToggled: Boolean, animationState: N
 
 `;
 
+export const SignInFormContainer = styled.div`
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+`;
+
 export const Title = styled.span`
     font-size: 2em;
     font-weight: 700;
@@ -75,7 +84,7 @@ export const Title = styled.span`
 `;
 
 export const Input = styled.input`
-    width: 60%;
+    width: 70%;
     border: none;
     border-bottom: 2px solid grey;
     outline: none;
@@ -91,7 +100,9 @@ export const Input = styled.input`
 `;
 
 export const ButtonContainer = styled.div`
+    width: 70%;
     display: flex;
+    justify-content: space-between;
     flex-direction: row;
     gap: 1rem;
     padding-top: 2rem;
@@ -128,4 +139,38 @@ export const Button1 = styled.button`
         color: black;
         transform: scale(1.06);
     }
+`;
+
+export const ErrorText = styled.span<{loginError: boolean}>`
+    width: 70%;
+	display: ${({ loginError }) => loginError? 'block': 'none'};
+	padding-left: 5px;
+	font-size: 0.8em;
+	font-weight: 500;
+	color: red;
+`;
+
+export const ShowPasswordContainer = styled.div`
+    width: 70%;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+`;
+
+export const ShowPasswordButton = styled.button<{showPassword: string}>`
+	height: 15px;
+	border: 2px solid ${({ showPassword }) => showPassword.includes('password') ? '#d3d3d3' : 'grey'};
+	border-radius: 3px;
+	background-color: ${({ showPassword }) => showPassword.includes('password') ? 'white' : '#1c74ec'};
+
+	&:hover {
+		box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.5);
+	}
+`;
+
+export const ShowPassword = styled.span`
+	font-size: 0.9em;
+	font-weight: 470;
+	cursor: pointer;
 `;

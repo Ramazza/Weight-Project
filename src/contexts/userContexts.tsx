@@ -31,7 +31,7 @@ export const UserStorage = ({ children }: any) => {
     const [data, setData] = useState<MyData[]>([]);
     const [profileImage, setProfileImage] = useState(User);
 
-    const [loginError, setLoginError] = useState(false)
+    const [loginError, setLoginError] = useState('')
 	const [nameError, setNameError] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('Use 9 caracteres com uma combinação de letras, números e símbolos.');
@@ -111,13 +111,36 @@ export const UserStorage = ({ children }: any) => {
 	};
 
     const handleLogin = (email: string, password: string) => {
-        api.post('/user/sign-in', {email, password}).then(({ data}) => {
-            console.log('Login feito com sucesso!');
+
+        if (!email || !password) {
+            setLoginError("E-mail e senha não podem ser vazios.");
+            return;
+        }
+    
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setLoginError("Formato de e-mail inválido.");
+            return;
+        }
+    
+        api.post('/user/sign-in', { email, password }).then(({ data }) => {
             localStorage.setItem('token', data.token);
             setToken(data.token);
-            navigateTo('/home');
+            setLoginError('');
+            navigateTo('/');
         }).catch((error) => {
-            console.log('Não foi possível fazer o login', error);
+            if (error.response) {
+                if (error.response.status === 401) {
+                    setLoginError("E-mail ou senha inválidos.");
+                } else {
+                    setLoginError("Ocorreu um erro. Tente novamente.");
+                }
+            } else if (error.request) {
+                setLoginError("Ocorreu um erro. Tente novamente.");
+            } else {
+                setLoginError("Ocorreu um erro. Tente novamente.");
+            }
+            console.log('Login error', error);
         })
     };
 
@@ -133,7 +156,9 @@ export const UserStorage = ({ children }: any) => {
         }
 
         api.post('/user/sign-up', {name, email, password}).then(() => {
-            console.log('Usuário criado com sucesso!');
+            setNameError('');
+			setEmailError('');
+			setPasswordError('');
             handleLogin(email, password);
         }).catch((error) => {
             console.log('Não foi possível criar o usuário', error)
