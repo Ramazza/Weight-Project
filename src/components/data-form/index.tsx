@@ -22,6 +22,10 @@ function DataForm() {
         email: string;
     }
 
+    const normalizeNumber = (input: string) => {
+        return input.replace(',', '.');
+    }
+
     const handleDataEntry = () => {
         
         if(weight === '' || date.length < 1) {
@@ -30,7 +34,16 @@ function DataForm() {
 
         if(token) {
             const decoded = jwtDecode<MyJwtPayload>(token);
-            handleAddData(token, decoded.id, parseFloat(weight), parseFloat(fat), parseFloat(muscle), parseFloat(visFat), parseFloat(bodyAge), date);
+            handleAddData(
+                token, 
+                decoded.id, 
+                parseFloat(normalizeNumber(weight)), 
+                parseFloat(normalizeNumber(fat)), 
+                parseFloat(normalizeNumber(muscle)), 
+                parseFloat(normalizeNumber(visFat)), 
+                parseFloat(normalizeNumber(bodyAge)), 
+                date
+            );
             setReload((prev: any) => !prev)
         }
 

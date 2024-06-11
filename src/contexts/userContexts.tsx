@@ -36,6 +36,13 @@ export const UserStorage = ({ children }: any) => {
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('Use 9 caracteres com uma combinação de letras, números e símbolos.');
 
+    interface FormFields {
+		name: string;
+		email: string;
+		password: string;
+		password2: string;
+	}
+
     useEffect(() => {
         const savedToken = localStorage.getItem('token');
         if(savedToken) {
@@ -72,13 +79,6 @@ export const UserStorage = ({ children }: any) => {
 
         return IMC;
     }
-
-    interface FormFields {
-		name: string;
-		email: string;
-		password: string;
-		password2: string;
-	}
 
     const checkLogin = (formData: FormFields) => {
 		const { name, email, password, password2 } = formData;
@@ -259,30 +259,6 @@ export const UserStorage = ({ children }: any) => {
         }
     };
 
-    /* const handleGetLatestWeight = async (user_id: string, token: string) => {
-        try{
-            const response = await api.get(
-                'user/get-latest-weight',
-                {
-                    params: { user_id },
-                    headers: { Authorization: `Bearer ${token}`}
-                },
-            );
-            console.log('Dados obtidos com sucesso!', response.data.user.weight);
-            setWeight(response.data.user.weight);
-        } catch (error: any) {
-            if (error.response) {
-                console.error('Erro no servidor:', error.response.data);
-                console.error('Status code:', error.response.status);
-            } else if (error.request) {
-                console.error('Nenhuma resposta recebida do servidor:', error.request);
-            } else {
-                console.error('Erro ao configurar a solicitação:', error.message);
-            }
-            console.error('Configuração do erro:', error.config);
-        }
-    }; */
-
     const handleGetLatestWeight = async (user_id: string, token: string) => {
         try {
             const response = await api.get(
@@ -293,7 +269,6 @@ export const UserStorage = ({ children }: any) => {
                 }
             );
 
-            // Ensure response.data and response.data.user are defined
             if (response.data && response.data.user && response.data.user.weight !== undefined) {
                 setWeight(response.data.user.weight);
             } else {
@@ -312,7 +287,6 @@ export const UserStorage = ({ children }: any) => {
         }
     };
     
-
     const handleGetAllData = async (user_id: string, token: string) => {
         try{
             const response = await api.get(
