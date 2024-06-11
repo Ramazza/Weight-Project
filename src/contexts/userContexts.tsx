@@ -259,7 +259,7 @@ export const UserStorage = ({ children }: any) => {
         }
     };
 
-    const handleGetLatestWeight = async (user_id: string, token: string) => {
+    /* const handleGetLatestWeight = async (user_id: string, token: string) => {
         try{
             const response = await api.get(
                 'user/get-latest-weight',
@@ -268,7 +268,7 @@ export const UserStorage = ({ children }: any) => {
                     headers: { Authorization: `Bearer ${token}`}
                 },
             );
-            // console.log('Dados obtidos com sucesso!');
+            console.log('Dados obtidos com sucesso!', response.data.user.weight);
             setWeight(response.data.user.weight);
         } catch (error: any) {
             if (error.response) {
@@ -281,7 +281,37 @@ export const UserStorage = ({ children }: any) => {
             }
             console.error('Configuração do erro:', error.config);
         }
+    }; */
+
+    const handleGetLatestWeight = async (user_id: string, token: string) => {
+        try {
+            const response = await api.get(
+                'user/get-latest-weight',
+                {
+                    params: { user_id },
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+
+            // Ensure response.data and response.data.user are defined
+            if (response.data && response.data.user && response.data.user.weight !== undefined) {
+                setWeight(response.data.user.weight);
+            } else {
+                console.error('Unexpected response structure:', response.data);
+            }
+        } catch (error: any) {
+            if (error.response) {
+                console.error('Erro no servidor:', error.response.data);
+                console.error('Status code:', error.response.status);
+            } else if (error.request) {
+                console.error('Nenhuma resposta recebida do servidor:', error.request);
+            } else {
+                console.error('Erro ao configurar a solicitação:', error.message);
+            }
+            console.error('Configuração do erro:', error.config);
+        }
     };
+    
 
     const handleGetAllData = async (user_id: string, token: string) => {
         try{

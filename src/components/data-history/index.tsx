@@ -31,7 +31,11 @@ function DataHistory() {
         if (token) {
             const decoded = jwtDecode<MyJwtPayload>(token);
             handleGetAllData(decoded.id, token).then((fetchedData: MyData[]) => {
-                setData(fetchedData);
+                if (Array.isArray(fetchedData)) {
+                    setData(fetchedData);
+                  } else {
+                    console.error("Fetched data is not an array:", fetchedData);
+                  }
             }).catch((error: any) => {
                 console.error("Error fetching data:", error);
             });

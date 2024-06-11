@@ -34,7 +34,7 @@ function DataGraph() {
         if (token) {
             const decoded = jwtDecode<MyJwtPayload>(token);
             handleGetAllData(decoded.id, token).then((fetchedData: MyData[]) => {
-                setData(fetchedData);
+                setData(Array.isArray(fetchedData) ? fetchedData : []);
             }).catch((error: any) => {
                 console.error("Error fetching data:", error);
             })
